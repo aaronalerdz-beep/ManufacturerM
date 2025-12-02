@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  postgres: 
+    image: postgres:latest
+    environment:
+      POSTGRES_PASSWORD: Password1
+      POSTGRES_DB: ManufacturerM_db
+    ports:
+      - "5433:5432"
