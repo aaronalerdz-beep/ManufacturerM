@@ -1,4 +1,6 @@
+using System.Security.Cryptography.X509Certificates;
 using Core.Entities;
+using Core.Interfeces;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,63 +12,76 @@ namespace API.Controller
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PartsController : ControllerBase
+    public class PartsController(IPartRepository repo) : ControllerBase
     {
-        private readonly MContext context;
-        public PartsController(MContext context)
-        {
-            this.context = context;
-        }
+        
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Parts>>> GetParts()
+        public async Task<ActionResult<IReadOnlyList<Parts>>> GetParts(string ? material, string? sort)
         {
-            return await context.Parts.ToListAsync();
+            return Ok(await repo.GetPartsAsync(material, sort));
         }
 
         [HttpGet("{id:int}")]
         public async Task<ActionResult<Parts>> GetParts(int id)
         {
-            var parts = await context.Parts.FindAsync(id);
+            var parts = await repo.GEtPartsByIdAsync(id);
             if(parts == null) return NotFound();
             return parts;
         }
 
         [HttpPost]
-        public async Task<ActionResult<Parts>> CreatPart(Parts parts)
+        public async Task<ActionResult<Parts>> CreatPart(Parts part)
         {
-            context.Parts.Add(parts);
+            
+            repo.AddParts(part);
 
-            await context.SaveChangesAsync();
+           if(await repo.SaveChangesAsync())
+           {
+                return CreatedAtAction("GetParts", new {id = part.IdSeq}, part);
+           }
 
-            return parts;
+            return BadRequest("Bad Request");
         }
+
         [HttpPut("{id:int}")]
         public async Task<ActionResult> UpdatePart(int id, Parts part)
         {
             if(part.IdSeq != id || !PartExists(id))
                 return BadRequest("Bad Request");
 
-            context.Entry(part).State = EntityState.Modified;
-            await context.SaveChangesAsync();
+            repo.UpdatePart(part);
+            if(await repo.SaveChangesAsync())
+           {
+                return NoContent();
+           }
 
-            return NoContent();
+            return BadRequest("Problem Update");
         }
+        [HttpDelete("{id:int}")]
         public async Task<ActionResult> DeletedPart(int id)
         {
-            var part = await context.Parts.FindAsync(id);
+            var part = await repo.GEtPartsByIdAsync(id);
 
             if(part == null) return NotFound();
 
-            context.Parts.Remove(part);
-            await context.SaveChangesAsync();
+            repo.DeletePart(part);
 
-            return NoContent();
+            if(await repo.SaveChangesAsync())
+           {
+                return NoContent();
+           }
+
+            return BadRequest("Problem delete");
         }
 
-
+        [HttpGet("material")]
+        public async Task<ActionResult<IReadOnlyList<string>>> GetMaterial()
+        {
+            return Ok(await repo.GetMaterialAsync());
+        }
         private bool PartExists(int id)
         {
-            return context.Parts.Any(x => x.IdSeq == id);
+            return repo.PartsExist(id);
         }
     }
 }

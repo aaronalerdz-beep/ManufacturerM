@@ -12,7 +12,7 @@ public class Parts : BaseEntity
     public string? Description { get; set; }
 
     [MaxLength(50)]
-    public string? Material { get; set; }
+    public required string Material { get; set; }
 
     [MaxLength(500)]
     public string? Sequence { get; set; }

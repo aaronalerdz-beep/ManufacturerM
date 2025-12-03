@@ -1,3 +1,4 @@
+using Core.Interfeces;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,6 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<MContext>(otp => {
   otp.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+builder.Services.AddScoped<IPartRepository, PartRepository>();
 
 var app = builder.Build();
 
