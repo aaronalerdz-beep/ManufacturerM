@@ -4,7 +4,7 @@ using Core.Entities;
 
 namespace Core.Specifications;
 
-public class MaterialListSpecification : BaseSpecification<Parts, string>
+public class MaterialListSpecification : BaseSpecification<Part, string>
 {
     public MaterialListSpecification()
     {

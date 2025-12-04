@@ -3,7 +3,7 @@ using Core.Entities;
 
 namespace Core.Specifications;
 
-public class PartSpecification : BaseSpecification<Parts>
+public class PartSpecification : BaseSpecification<Part>
 {
     public PartSpecification(string? material, string? sort):base(x=> 
              string.IsNullOrWhiteSpace(material)|| x.Material ==material)

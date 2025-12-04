@@ -13,11 +13,11 @@ namespace API.Controller
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PartsController(IGenericRepository<Parts> repo) : ControllerBase
+    public class PartsController(IGenericRepository<Part> repo) : ControllerBase
     {
         
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<Parts>>> GetParts(string ? material, string? sort)
+        public async Task<ActionResult<IReadOnlyList<Part>>> GetParts(string ? material, string? sort)
         {
             var spec = new PartSpecification(material, sort);
 
@@ -26,7 +26,7 @@ namespace API.Controller
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<Parts>> GetParts(int id)
+        public async Task<ActionResult<Part>> GetParts(int id)
         {
             var parts = await repo.GetByIdAsync(id);
             if(parts == null) return NotFound();
@@ -34,7 +34,7 @@ namespace API.Controller
         }
 
         [HttpPost]
-        public async Task<ActionResult<Parts>> CreatPart(Parts part)
+        public async Task<ActionResult<Part>> CreatPart(Part part)
         {
             
             repo.Add(part);
@@ -48,7 +48,7 @@ namespace API.Controller
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult> UpdatePart(int id, Parts part)
+        public async Task<ActionResult> UpdatePart(int id, Part part)
         {
             if(part.IdSeq != id || !PartExists(id))
                 return BadRequest("Bad Request");

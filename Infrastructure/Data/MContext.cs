@@ -8,13 +8,21 @@ namespace Infrastructure.Data;
 
 public class MContext(DbContextOptions options) : DbContext(options)
 {
-    public DbSet<Parts> Parts { get; set; }
+    public DbSet<Part> Parts { get; set; }
+    public DbSet<Machine> Machines { get; set; }
+    public DbSet<Machine_config> MachineConfigs { get; set; }
+    public DbSet<Cycle> Cycles { get; set; }
+    public DbSet<Production_order> Production_Orders { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(PartsConfiguration).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(CycleConfiguration).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(ProductionOrderConfiguration).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(MachinesConfiguration).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(MachineConfigConfiguration).Assembly);
 
         foreach (var entity in modelBuilder.Model.GetEntityTypes())
         {

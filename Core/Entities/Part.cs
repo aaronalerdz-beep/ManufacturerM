@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Entities;
-public class Parts : BaseEntity
+public class Part : BaseEntity
 {
     [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public string? PartNum { get; private set; }
@@ -18,5 +18,8 @@ public class Parts : BaseEntity
     public string? Sequence { get; set; }
 
     public decimal Weight { get; set; }
+
+    
+    public ICollection<Production_order>? Productionorder { get; set; }
 }
 

@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Config;
 
-public class PartsConfiguration : IEntityTypeConfiguration<Parts>
+public class PartsConfiguration : IEntityTypeConfiguration<Part>
 {
     
 
-    public void Configure(EntityTypeBuilder<Parts> builder)
+    public void Configure(EntityTypeBuilder<Part> builder)
     {
         builder.Property(x => x.Weight).HasColumnType("decimal(18,2)");
         builder.Property(x => x.Description).IsRequired();
