@@ -1,28 +1,24 @@
-using System.Security.Cryptography.X509Certificates;
+using API.Controllers;
+using API.RequestHelpers;
 using Core.Entities;
 using Core.Interfeces;
 using Core.Specifications;
-using Infrastructure.Data;
-using Microsoft.AspNetCore.Http;
+
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Build.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.FileProviders;
+
 
 namespace API.Controller
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PartsController(IGenericRepository<Part> repo) : ControllerBase
+    public class PartsController(IGenericRepository<Part> repo) : BaseApiController
     {
-        
-        [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<Part>>> GetParts(string ? material, string? sort)
-        {
-            var spec = new PartSpecification(material, sort);
 
-            var part = await repo.ListAsync(spec);
-            return Ok(part);
+        [HttpGet]
+        public async Task<ActionResult<IReadOnlyList<Part>>> GetParts([FromQuery]SpecParams specParams)
+        {
+            var spec = new PartSpecification(specParams);
+            return await CreatePagedResult(repo, spec, specParams.PageIndex,specParams.PageSize);
         }
 
         [HttpGet("{id:int}")]

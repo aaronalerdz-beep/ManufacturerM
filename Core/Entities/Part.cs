@@ -9,7 +9,7 @@ public class Part : BaseEntity
     public string? PartNum { get; private set; }
 
     [MaxLength(255)]
-    public string? Description { get; set; }
+    public required string Description { get; set; }
 
     [MaxLength(50)]
     public required string Material { get; set; }

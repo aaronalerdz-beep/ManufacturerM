@@ -1,15 +1,19 @@
 using System;
+using System.ComponentModel;
 using Core.Entities;
 
 namespace Core.Specifications;
 
 public class PartSpecification : BaseSpecification<Part>
 {
-    public PartSpecification(string? material, string? sort):base(x=> 
-             string.IsNullOrWhiteSpace(material)|| x.Material ==material)
+    public PartSpecification(SpecParams specParams):base(x=> 
+            (string.IsNullOrWhiteSpace(specParams.Search)||x.Description.ToLower().Contains(specParams.Search))&&
+            (!specParams.Materials.Any())|| specParams.Materials.Contains(x.Material))
     {
-        switch (sort)
+        ApplyPaging(specParams.PageSize * (specParams.PageIndex -1), specParams.PageSize);
+        switch (specParams.Sort)
         {
+
             case "weightAsc":
                 AddOrderBy(x => x.Weight);
                 break;

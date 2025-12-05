@@ -6,7 +6,7 @@ namespace Core.Entities;
 public class Machine : BaseEntity
 {
     [MaxLength(50)]
-    public string? Name_machine { get; set; }
+    public required string Name_machine { get; set; }
     
     [MaxLength(50)]
     public string? area { get; set; }
