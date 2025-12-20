@@ -1,0 +1,15 @@
+<mat-sidenav-container class="h-screen">
+  
+  <mat-sidenav [opened]="sidenavService.isOpen()" mode="over">
+    <app-left-sidebar></app-left-sidebar>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <app-header></app-header>
+    
+    <main class="p-4">
+      <router-outlet></router-outlet>
+    </main>
+  </mat-sidenav-content>
+
+</mat-sidenav-container>

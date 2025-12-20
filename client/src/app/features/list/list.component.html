@@ -1,0 +1,14 @@
+<section class="flex justify-center h-full">
+  <div>
+    <div class="flex justify-end">
+      <button mat-stroked-button (click)="openFiltersDialog()">
+        <mat-icon>filter_list</mat-icon>
+      </button>
+    </div>
+    <app-generic-table
+      [data]="parts()"
+      [columns]="columns"
+      (rowSelected)="onRowSelected($event)">
+    </app-generic-table>
+  </div>
+</section>

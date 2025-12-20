@@ -6,9 +6,11 @@ namespace Core.Specifications;
 
 public class PartSpecification : BaseSpecification<Part>
 {
-    public PartSpecification(SpecParams specParams):base(x=> 
-            (string.IsNullOrWhiteSpace(specParams.Search)||x.Description.ToLower().Contains(specParams.Search))&&
-            (!specParams.Materials.Any())|| specParams.Materials.Contains(x.Material))
+    public PartSpecification(SpecParams specParams):base(x => 
+        (string.IsNullOrWhiteSpace(specParams.Search) || x.Description.ToLower().Contains(specParams.Search))
+        && 
+        (specParams.Materials == null || !specParams.Materials.Any() || specParams.Materials.Contains(x.Material))
+    )
     {
         ApplyPaging(specParams.PageSize * (specParams.PageIndex -1), specParams.PageSize);
         switch (specParams.Sort)
