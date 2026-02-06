@@ -6,7 +6,7 @@ public class Production_order : BaseEntity
 {
     public int target_quantity { get; set; }
     public int final_quantity { get; set; }
-    public DateTime started_time {get; set; }
+    public DateTime Started_time { get; set; } = DateTime.Now;
     public DateTime? finished_time {get; set; }
 
     public Part? Part { get; set; }

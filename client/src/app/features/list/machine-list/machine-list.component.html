@@ -1,0 +1,14 @@
+<section class="flex justify-center h-full">
+  <div>
+    <div class="flex justify-end">
+      <button mat-stroked-button >
+        <mat-icon>filter_list</mat-icon>
+      </button>
+    </div>
+    <app-generic-table
+      [data]="machines()"
+      [columns]="columns"
+      (rowSelected)="onRowSelected($event)">
+    </app-generic-table>
+  </div>
+</section>

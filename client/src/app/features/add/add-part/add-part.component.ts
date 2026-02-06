@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { ListService } from '../../../core/services/list.service';
+import { PartsService } from '../../../core/services/parts.service';
 import { MatIconModule } from '@angular/material/icon';
 @Component({
   selector: 'app-add-part',
@@ -13,23 +13,37 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class AddPartComponent {
   private fb = inject(FormBuilder);
-  public listServer = inject(ListService);
+  public partsServer = inject(PartsService);
 
   // Definimos el formulario con validaciones básicas
-  partForm: FormGroup = this.fb.group({
+  partForm: FormGroup = this.fb.nonNullable.group({
     description: ['', [Validators.required, Validators.minLength(5)]],
     material: ['', Validators.required],
-    sequence: [0, [Validators.required, Validators.min(1)]],
-    weight: [0, [Validators.required, Validators.min(0.01)]]
+    sequence: ['', [Validators.required, Validators.min(1)]],
+    weight: ['', [Validators.required, Validators.min(0.01)]]
   });
 
   onSubmit() {
+    
     if (this.partForm.valid) {
-      const newPart = this.partForm.value;
+      const newPart = this.partForm.getRawValue();
       console.log('Enviando datos al backend:', newPart);
       
       // Aquí llamarías a tu servicio:
-      // this.listServer.createPart(newPart).subscribe(...)
+      this.partsServer.post(newPart).subscribe({
+        next: res => {
+          console.log('Save:', res);
+           this.partForm.reset({
+            description: '',
+            material: '',
+            sequence: '',
+            weight: ''
+          });
+        },
+        error: err => {
+          console.error('error submitting the form',err);
+        }
+      })
     }
   }
 }

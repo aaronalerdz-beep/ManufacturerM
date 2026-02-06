@@ -1,3 +1,4 @@
+using API.DTOs;
 using Core.Entities;
 using Core.Interfeces;
 using Core.Specifications;
@@ -28,9 +29,13 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Machine>> CreatMachine(Machine machine)
+        public async Task<ActionResult<Machine>> CreatMachine(MachineDto dto)
         {
-            
+            var machine = new Machine
+            {
+                Name_machine = dto.machineName,
+                area = dto.area
+            };
             repo.Add(machine);
 
            if(await repo.SaveAllAsync())

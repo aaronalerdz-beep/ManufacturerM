@@ -1,3 +1,4 @@
+using API.DTOs;
 using Core.Entities;
 using Core.Interfeces;
 using Core.Specifications;
@@ -28,15 +29,21 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Production_order>> CreatOrder(Production_order order)
+        public async Task<ActionResult<Production_order>> CreatOrder(ProductionOrderDto dto)
         {
-            
+            var order = new Production_order
+            {
+                PartIdSeq = dto.PartId,
+                target_quantity = dto.Quantity
+            };
+
+
             repo.Add(order);
 
-           if(await repo.SaveAllAsync())
-           {
-                return CreatedAtAction("GetOrder", new {id = order.IdSeq}, order);
-           }
+            if (await repo.SaveAllAsync())
+            {
+                return CreatedAtAction("GetOrder", new { id = order.IdSeq }, order);
+            }
 
             return BadRequest("Bad Request");
         }

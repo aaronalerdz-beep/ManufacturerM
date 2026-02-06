@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog'
 import { FiltersListComponent } from './filters-list/filters-list.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIcon } from "@angular/material/icon";
+import { MatMenuModule } from "@angular/material/menu";
 
 @Component({
   selector: 'app-list',
@@ -15,7 +16,8 @@ import { MatIcon } from "@angular/material/icon";
     MatTableModule,
     GenericTableComponent,
     MatButtonModule,
-    MatIcon
+    MatIcon,
+    MatMenuModule
 ],
   templateUrl: './list.component.html',
   styleUrl: './list.component.scss',
@@ -33,7 +35,7 @@ export class ListComponent implements OnInit{
   { key: 'material', label: 'Material', columnId: 'material' },
   { key: 'sequence', label: 'Sequence', columnId: 'sequence' },
   { key: 'weight', label: 'Weight', columnId: 'weight' },
-];
+  ];
 
 
   ngOnInit(): void {
@@ -42,10 +44,10 @@ export class ListComponent implements OnInit{
 
   initializeList(){
     this.listService.getMaterial();
-      this.listService.getList().subscribe({
-      next: response => this.parts.set(response.data),
-      error: error=> console.log(error),
-      complete: ()=> console.log('complete')
+    this.listService.getList().subscribe({
+    next: response => this.parts.set(response.data),
+    error: error=> console.log(error),
+    complete: ()=> console.log('complete')
       
     })
   }

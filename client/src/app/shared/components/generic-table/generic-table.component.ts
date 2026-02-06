@@ -2,13 +2,17 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { TableColumn } from '../../models/TableColumn';
 import { CommonModule } from '@angular/common';
+import { MatMenuModule } from "@angular/material/menu";
+import { MatIconModule } from "@angular/material/icon";
 
 @Component({
   selector: 'app-generic-table',
   standalone: true,
   imports: [
     MatTableModule,
-    CommonModule
+    CommonModule,
+    MatMenuModule,
+    MatIconModule
 ],
   templateUrl: './generic-table.component.html',
 })
