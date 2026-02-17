@@ -479,9 +479,19 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+*.dll
+*.exe
+*.json
+*.config
 
 # Vim temporary swap files
 *.swp
 API/appsettings.json
 client/ssl/localhost.pem
 client/ssl/localhost-key.pem
+API/ssl/localhost-key.pem
+API/ssl/localhost.pem
+
+
+client/src/environments/environment.development.ts
+client/src/environments/environment.ts
