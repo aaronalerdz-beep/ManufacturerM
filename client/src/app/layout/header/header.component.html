@@ -3,13 +3,12 @@
     <button mat-icon-button (click)="toggleMenu()">
       <mat-icon>menu</mat-icon>
     </button>
-    <span>Mi Proyecto</span>
+    <button  routerLink="/" mat-button>
+      <span>Mi Proyecto</span>
+    </button>
     <div>
-      <button>
-        <mat-icon>
-          logout
-        </mat-icon>
-      </button>
+      <button routerLink="/account/login" mat-stroked-button class="m-2">Login</button>
+      <button routerLink="/account/register" mat-stroked-button class="m-2">Register</button>
     </div>
   </mat-toolbar>
 </header>

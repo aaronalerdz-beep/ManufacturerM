@@ -1,6 +1,7 @@
 
-
 @use '@angular/material' as mat;
+@import "@angular/material/prebuilt-themes/indigo-pink.css";
+
 
 html {
   @include mat.theme((
