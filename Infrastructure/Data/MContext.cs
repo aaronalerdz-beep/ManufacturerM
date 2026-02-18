@@ -1,12 +1,13 @@
 using System;
 using Core.Entities;
 using Infrastructure.Config;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Infrastructure.Data;
 
-public class MContext(DbContextOptions options) : DbContext(options)
+public class MContext(DbContextOptions options) : IdentityDbContext<AppUser>(options)
 {
     public DbSet<Part> Parts { get; set; }
     public DbSet<Machine> Machines { get; set; }

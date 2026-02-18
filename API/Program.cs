@@ -1,4 +1,5 @@
 using API.Middleware;
+using Core.Entities;
 using Core.Interfeces;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,8 @@ builder.Services.AddDbContext<MContext>(otp => {
 });
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddCors();
+builder.Services.AddAuthentication();
+builder.Services.AddIdentityApiEndpoints<AppUser>().AddEntityFrameworkStores<MContext>();
 
 var app = builder.Build();
 
@@ -21,5 +24,6 @@ app.UseMiddleware<ExceptionMiddlewar>();
 app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200","https://localhost:4200"));
 
 app.MapControllers();
+app.MapGroup("api").MapIdentityApi<AppUser>();
 
 app.Run();
