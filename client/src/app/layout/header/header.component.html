@@ -1,14 +1,32 @@
 <header class="border-b shadow-md p-3 w-full max-h-20  top-0 z-50 bg-white">
   <mat-toolbar class="flex align-middle items-center justify-between max-w-screen-2xl mx-auto">
-    <button mat-icon-button (click)="toggleMenu()">
+    
+      @if (accountService.currentUser()){
+        <button mat-icon-button (click)="toggleMenu()">
       <mat-icon>menu</mat-icon>
     </button>
-    <button  routerLink="/" mat-button>
-      <span>Mi Proyecto</span>
+    <button  routerLink="/dashboard" mat-button>
+      <span>Manufacturer Line</span>
     </button>
     <div>
-      <button routerLink="/account/login" mat-stroked-button class="m-2">Login</button>
-      <button routerLink="/account/register" mat-stroked-button class="m-2">Register</button>
-    </div>
+          <button mat-stroked-button class="px-3" (click)="logout()">
+              <mat-icon>logout</mat-icon>
+              Logout
+          </button>
+      </div>    
+      } 
+      @else{
+        <button mat-icon-button  disabled="disabled">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <button mat-button  disabled="disabled">
+      <span>Manufacturer Line</span>
+    </button>
+    <div>
+      <button routerLink="/account/login" mat-stroked-button>Login</button>
+      <button routerLink="/account/register" mat-stroked-button>Register</button>
+    </div>  
+      }
   </mat-toolbar>
+
 </header>

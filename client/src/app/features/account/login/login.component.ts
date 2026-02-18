@@ -16,16 +16,17 @@ import { ActivatedRoute, Router } from '@angular/router';
     MatInput,
     MatLabel,
     MatButton
-  ],
+],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
+  
   private fb = inject(FormBuilder);
   private accountService = inject(AccountService);
   private router = inject(Router)
   private activatedRoute = inject(ActivatedRoute);
-  returnUrl = '/';
+  returnUrl = '/dashboard';
 
   constructor(){
     const url = this.activatedRoute.snapshot.queryParams['returnUrl'];
@@ -36,13 +37,20 @@ export class LoginComponent {
     password: ['']
   });
 
-  onSubmit(){
+ onSubmit() {
     this.accountService.login(this.loginForm.value).subscribe({
-      next: () =>{
-        this.accountService.getUserInfo().subscribe();
-        this.router.navigateByUrl(this.returnUrl);
-
+      next: () => {
+        this.accountService.getUserInfo().subscribe({
+          next: () => {
+            this.router.navigateByUrl(this.returnUrl);
+          },
+          error: (err) => console.error("Error", err)
+        });
+      },
+      error: (err) => {
+        console.error("Login error", err);
       }
-    })
+    });
   }
+
 }

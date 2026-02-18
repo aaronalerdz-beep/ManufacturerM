@@ -7,16 +7,18 @@ import { MachineListComponent } from './features/list/machine-list/machine-list.
 import { DashboardComponent } from './features/dashboard/dashboard.component';
 import { LoginComponent } from './features/account/login/login.component';
 import { RegisterComponent } from './features/account/register/register.component';
+import { authGuard } from './core/guards/auth-guard';
 
 export const routes: Routes = [
-    {path: '', component: DashboardComponent},
-    {path: 'list', component: ListComponent},
-    {path: 'addpart', component: AddPartComponent},
-    {path: 'addorder', component: AddOrderComponent},
+    {path: '', component: LoginComponent},
+    {path: 'dashboard', component: DashboardComponent, canActivate:[authGuard]},
+    {path: 'list', component: ListComponent, canActivate:[authGuard]},
+    {path: 'addpart', component: AddPartComponent, canActivate:[authGuard]},
+    {path: 'addorder', component: AddOrderComponent, canActivate:[authGuard]},
     {path: 'account/login', component: LoginComponent},
     {path: 'account/register', component: RegisterComponent},
-    {path: 'addmachine', component: AddMachineComponent},
-    {path: 'listMachine', component: MachineListComponent},
+    {path: 'addmachine', component: AddMachineComponent, canActivate:[authGuard]},
+    {path: 'listMachine', component: MachineListComponent, canActivate:[authGuard]},
     {path: '**', redirectTo: '', pathMatch: 'full'},
     
 ];

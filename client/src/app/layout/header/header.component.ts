@@ -11,6 +11,7 @@ import { MatProgressBar} from '@angular/material/progress-bar';
 import { Router, RouterLink, RouterLinkActive } from "@angular/router";
 import { AccountService } from '../../core/services/account.service';
 import { MatDivider } from '@angular/material/divider';
+import { BusyServices } from '../../core/services/busy.service';
 
 
 @Component({
@@ -20,7 +21,7 @@ import { MatDivider } from '@angular/material/divider';
     MatMenuModule,
     MatToolbarModule,
     MatIcon,
-    MatSidenavModule, 
+    MatSidenavModule,
     MatIconModule,
     MatButtonModule,
     RouterLink,
@@ -30,6 +31,7 @@ import { MatDivider } from '@angular/material/divider';
 })
 export class HeaderComponent {
   private sidenavService = inject(SidenavService);
+  busyServices = inject(BusyServices);
   accountService = inject(AccountService);
   private router = inject(Router);
 
@@ -37,7 +39,7 @@ export class HeaderComponent {
     this.accountService.logout().subscribe({
       next: () => {
         this.accountService.currentUser.set(null);
-        this.router.navigateByUrl('/')
+        this.router.navigateByUrl('/account/login')
       }
     })
   }
