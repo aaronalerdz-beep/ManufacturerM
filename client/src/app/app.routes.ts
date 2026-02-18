@@ -8,11 +8,13 @@ import { DashboardComponent } from './features/dashboard/dashboard.component';
 import { LoginComponent } from './features/account/login/login.component';
 import { RegisterComponent } from './features/account/register/register.component';
 import { authGuard } from './core/guards/auth-guard';
+import { OrderListComponent } from './features/list/order-list/order-list.component';
 
 export const routes: Routes = [
     {path: '', component: LoginComponent},
     {path: 'dashboard', component: DashboardComponent, canActivate:[authGuard]},
     {path: 'list', component: ListComponent, canActivate:[authGuard]},
+    {path: 'listOrder', component: OrderListComponent, canActivate:[authGuard]},
     {path: 'addpart', component: AddPartComponent, canActivate:[authGuard]},
     {path: 'addorder', component: AddOrderComponent, canActivate:[authGuard]},
     {path: 'account/login', component: LoginComponent},

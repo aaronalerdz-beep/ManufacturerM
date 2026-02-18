@@ -13,7 +13,7 @@
         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white">
 
         <option [ngValue]="null" disabled>
-          Seleccione una opción...
+          Select an option...
         </option>
         <option *ngFor="let p of parts()" [value]="p.idSeq">
           {{ p.partNum }} — {{ p.description }}

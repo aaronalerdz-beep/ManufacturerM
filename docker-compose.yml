@@ -1,9 +1,15 @@
-version: '3.8'
 services:
   postgres: 
     image: postgres:latest
+    container_name: manufacturermachine-postgres
+    restart: always
     environment:
       POSTGRES_PASSWORD: Password1
       POSTGRES_DB: ManufacturerM_db
     ports:
       - "5433:5432"
+    volumes:
+      - pg_data_machine:/var/lib/postgresql 
+
+volumes:
+  pg_data_machine: 

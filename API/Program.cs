@@ -21,7 +21,7 @@ var app = builder.Build();
 
 app.UseMiddleware<ExceptionMiddlewar>();
 
-
+app.UseCors("AllowAngular");
 app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowCredentials()
 .WithOrigins("https://localhost:4200","https://localhost:4200"));
 
