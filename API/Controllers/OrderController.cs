@@ -13,7 +13,7 @@ namespace API.Controllers
     {
          
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<Production_order>>> Getorder([FromQuery]SpecParams specParams)
+        public async Task<ActionResult<IReadOnlyList<Production_order>>> GetOrder([FromQuery]SpecParams specParams)
         {
             var spec = new ORderSoecification(specParams);
             return await CreatePagedResult(repo, spec, specParams.PageIndex,specParams.PageSize);
@@ -28,24 +28,20 @@ namespace API.Controllers
             return parts;
         }
 
-        [HttpPost]
-        public async Task<ActionResult<Production_order>> CreatOrder(ProductionOrderDto dto)
-        {
-            var order = new Production_order
-            {
+        [HttpPost] 
+        public async Task<ActionResult<Production_order>> CreatOrder(ProductionOrderDto dto) {
+             var order = new Production_order 
+             { 
                 PartIdSeq = dto.PartId,
-                target_quantity = dto.Quantity
-            };
-
-
-            repo.Add(order);
-
-            if (await repo.SaveAllAsync())
-            {
+                target_quantity = dto.Quantity,
+                started_time = DateTime.UtcNow  
+             };
+              repo.Add(order); 
+              if (await repo.SaveAllAsync()) 
+              { 
                 return CreatedAtAction("GetOrder", new { id = order.IdSeq }, order);
-            }
-
-            return BadRequest("Bad Request");
+               } 
+               return BadRequest("Bad Request"); 
         }
         
         [HttpPut("{id:int}")]
