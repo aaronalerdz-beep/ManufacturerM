@@ -1,5 +1,5 @@
 export interface Part {
-    idseq : number,
+    idSeq : number,
     partNum : string,
     description: string,
     material: string,

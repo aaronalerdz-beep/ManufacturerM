@@ -6,7 +6,7 @@
       </button>
     </div>
     <app-generic-table
-      [data]="orders()"
+      [data]="ordersWithPartNames()"
       [columns]="columns"
       (rowSelected)="onRowSelected($event)">
     </app-generic-table>

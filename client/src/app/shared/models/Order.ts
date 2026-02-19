@@ -3,5 +3,5 @@ export interface Production_order {
     final_quantity: number,
     started_time: Date, 
     finished_time: Date,
-    PartIdSeq: number
+    partIdSeq: number
 }
