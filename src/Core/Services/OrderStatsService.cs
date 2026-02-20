@@ -1,6 +1,8 @@
 using Core.DTOs;
 using Core.Entities;
 using Core.Interfeces;
+
+namespace Core.Services;
 public class OrderStatsService : IOrderStatsService
 {
     private readonly IGenericRepository<Production_order> _repo;
@@ -10,7 +12,6 @@ public class OrderStatsService : IOrderStatsService
         _repo = repo;
     }
 
-    // Cambiamos T por el DTO real
     public async Task<IEnumerable<MonthlyStatsDto>> GetMonthlyStats()
     {
         var orders = await _repo.ListAllAsync();
@@ -21,7 +22,7 @@ public class OrderStatsService : IOrderStatsService
             {
                 Month = g.Key.ToString(),
                 TotalOrders = g.Count(),
-                TotalQuantity = g.Sum(x => x.final_quantity ?? 0)
+                TotalQuantity = g.Sum(x => x.target_quantity)
             })
             .OrderBy(x => int.Parse(x.Month))
             .ToList();
@@ -34,7 +35,7 @@ public class OrderStatsService : IOrderStatsService
         var orders = await _repo.ListAllAsync();
 
         return orders
-            .GroupBy(o => o.IdSeq) 
+            .GroupBy(o => o.PartIdSeq) 
             .Select(g => new PartStatsDto
             {
                 Part = g.Key,
