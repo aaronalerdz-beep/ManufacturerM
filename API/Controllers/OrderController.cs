@@ -78,5 +78,42 @@ namespace API.Controllers
         {
             return repo.Exists(id);
         }
+    
+        [HttpGet("stats/monthly")]
+        public async Task<ActionResult> GetMonthlyStats()
+        {
+            var orders = await repo.ListAllAsync(); 
+
+            var stats = orders
+                .GroupBy(o => o.started_time.Month)
+                .Select(g => new {
+                    Month = g.Key,               
+                    MonthName = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(g.Key),
+                    TotalOrders = g.Count(),     
+                    TotalQuantity = g.Sum(x => x.target_quantity) 
+                })
+                .OrderBy(x => x.Month)
+                .ToList();
+
+            return Ok(stats);
+        }
+        [HttpGet("count/parts")]
+        public async Task<ActionResult> GetCount()
+        {
+            var orders = await repo.ListAllAsync(); 
+
+            var stats = orders
+                .GroupBy(o => o.PartIdSeq)
+                .Select(g => new {
+                    part = g.Key,
+                              
+                    TotalOrders = g.Count(),     
+                    TotalQuantity = g.Sum(x => x.target_quantity) 
+                })
+                .OrderBy(x => x.part)
+                .ToList();
+
+            return Ok(stats);
+        }
     }
 }

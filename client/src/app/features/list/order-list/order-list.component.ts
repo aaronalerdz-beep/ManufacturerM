@@ -8,6 +8,7 @@ import { TableColumn } from '../../../shared/models/TableColumn';
 import { PartsService } from '../../../core/services/parts.service';
 import { Part } from '../../../shared/models/part';
 
+
 @Component({
   selector: 'app-order-list',
   imports: [
@@ -20,10 +21,11 @@ import { Part } from '../../../shared/models/part';
 export class OrderListComponent {
 
     public partsServer = inject(PartsService);
-    private machineService = inject(OrdersService)
+    private ordersService = inject(OrdersService)
     private dialogService = inject(MatDialog)
     parts = signal<Part[]>([]);
     orders = signal<Production_order[]>([]);
+    
 
     columns: TableColumn<any>[] = [
       { key: 'partNum', label: 'Part Number', columnId: 'partName' }, 
@@ -38,28 +40,21 @@ export class OrderListComponent {
     this.initializeList();
     this.initializepartList();
   }
-
   initializepartList() {
     this.partsServer.getAll().subscribe({
     next: response => {
-      console.log('Contenido de response.data:', response.data);
       this.parts.set(response.data)
-    
     },
-      error: (err) => console.error('Error cargando categorías', err)
+      error: (err) => console.error('Error:', err)
     });
-    
   }
-
   initializeList(){
-    this.machineService.getAll().subscribe({
+    this.ordersService.getAll().subscribe({
     next: response => {
         console.log(response.data);
         this.orders.set(response.data)
     },
-    error: error=> console.log(error),
-    complete: ()=> console.log('complete')
-      
+    error: error=> console.log(error)      
     })
   }
   
@@ -79,6 +74,7 @@ export class OrderListComponent {
       };
     });
   });
+
     selected?: number;
   
     onRowSelected(o: Production_order) {

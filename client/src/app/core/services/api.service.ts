@@ -28,4 +28,5 @@ export abstract class ApiService<T> {
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${this.endpoint}/${id}`);
   }
+  
 }
