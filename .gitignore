@@ -486,11 +486,11 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
-API/appsettings.json
+src/API/appsettings.json
 client/ssl/localhost.pem
 client/ssl/localhost-key.pem
-API/ssl/localhost-key.pem
-API/ssl/localhost.pem
+src/API/ssl/localhost-key.pem
+src/API/ssl/localhost.pem
 
 
 client/src/environments/environment.development.ts
