@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace API.DTOs
+namespace Core.DTOs
 {
     public class MachineDto
     {

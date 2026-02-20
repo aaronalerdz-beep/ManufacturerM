@@ -1,4 +1,4 @@
-using API.DTOs;
+using Core.DTOs;
 using Core.Entities;
 using Core.Interfeces;
 using Core.Specifications;

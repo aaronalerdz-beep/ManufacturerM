@@ -1,4 +1,4 @@
-using API.DTOs;
+using Core.DTOs;
 using Core.Entities;
 using Core.Interfeces;
 using Core.Specifications;
@@ -9,7 +9,8 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OrderController(IGenericRepository<Production_order> repo)  : BaseApiController
+    public class OrderController(IGenericRepository<Production_order> repo, IOrderStatsService _statsService)  
+        : BaseApiController
     {
          
         [HttpGet]
@@ -82,38 +83,14 @@ namespace API.Controllers
         [HttpGet("stats/monthly")]
         public async Task<ActionResult> GetMonthlyStats()
         {
-            var orders = await repo.ListAllAsync(); 
-
-            var stats = orders
-                .GroupBy(o => o.started_time.Month)
-                .Select(g => new {
-                    Month = g.Key,               
-                    MonthName = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(g.Key),
-                    TotalOrders = g.Count(),     
-                    TotalQuantity = g.Sum(x => x.target_quantity) 
-                })
-                .OrderBy(x => x.Month)
-                .ToList();
-
-            return Ok(stats);
+            var result = await _statsService.GetMonthlyStats();
+            return Ok(result);
         }
         [HttpGet("count/parts")]
         public async Task<ActionResult> GetCount()
         {
-            var orders = await repo.ListAllAsync(); 
-
-            var stats = orders
-                .GroupBy(o => o.PartIdSeq)
-                .Select(g => new {
-                    part = g.Key,
-                              
-                    TotalOrders = g.Count(),     
-                    TotalQuantity = g.Sum(x => x.target_quantity) 
-                })
-                .OrderBy(x => x.part)
-                .ToList();
-
-            return Ok(stats);
+            var result = await _statsService.GetPartStats();
+            return Ok(result);
         }
     }
 }

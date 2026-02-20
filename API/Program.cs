@@ -13,6 +13,7 @@ builder.Services.AddDbContext<MContext>(otp => {
         otp.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped<IOrderStatsService, OrderStatsService>();
 builder.Services.AddCors();
 builder.Services.AddAuthentication();
 builder.Services.AddIdentityApiEndpoints<AppUser>().AddEntityFrameworkStores<MContext>();
