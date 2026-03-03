@@ -37,7 +37,7 @@ namespace API.Controllers
 
            if(await repo.SaveAllAsync())
            {
-                return CreatedAtAction("GetMachine", new {id = cofig.IdSeq}, cofig);
+                return CreatedAtAction("GetConfiguration", new {id = cofig.IdSeq}, cofig);
            }
 
             return BadRequest("Bad Request");

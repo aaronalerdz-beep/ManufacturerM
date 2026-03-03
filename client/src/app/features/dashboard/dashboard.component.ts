@@ -60,11 +60,13 @@ export class DashboardComponent {
     totalOrdersCount = computed(() => {
     return this.mOrders().reduce((acc, current) => acc + current.totalOrders, 0);
     });
+
     totalFinishCount = computed(() => {
       return this.orders().reduce((sum, order) => {
         return sum + (order.final_quantity || 0);
       }, 0);
     });
+    
     totaltargetCount = computed(() => {
       return this.orders().reduce((sum, order) => {
         return sum + (order.target_quantity || 0);

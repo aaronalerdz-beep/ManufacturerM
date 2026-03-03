@@ -10,4 +10,5 @@ public interface IOrderStatsService
 {
     Task<IEnumerable<MonthlyStatsDto>> GetMonthlyStats();
     Task<IEnumerable<PartStatsDto>> GetPartStats();
+    Task<IEnumerable<ProductionOrderDto>> GetStatusCreated();
 }

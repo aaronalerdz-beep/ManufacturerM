@@ -9,5 +9,6 @@ namespace Core.DTOs
     {
          public int PartId { get; set; }   
         public int Quantity { get; set; }
+        public int IdSeq {get; set;}
     }
 }

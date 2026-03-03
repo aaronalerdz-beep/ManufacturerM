@@ -35,7 +35,8 @@ namespace API.Controllers
              { 
                 PartIdSeq = dto.PartId,
                 target_quantity = dto.Quantity,
-                started_time = DateTime.UtcNow  
+                started_time = DateTime.UtcNow,
+                status = "Created"
              };
               repo.Add(order); 
               if (await repo.SaveAllAsync()) 
@@ -91,6 +92,28 @@ namespace API.Controllers
         {
             var result = await _statsService.GetPartStats();
             return Ok(result);
+        }
+        [HttpGet("status/created")]
+        public async Task<ActionResult> GetCreatedOrders()
+        {
+            var result = await _statsService.GetStatusCreated();
+            return Ok(result);
+        }
+        [HttpPut("{id:int}/status")]
+        public async Task<ActionResult> UpdateStatusOrder(int id, UpdateOrderStatusDto dto)
+        {
+            var order = await repo.GetByIdAsync(id); 
+            Console.WriteLine($"ID: {id}, Status: {dto.Status}, Qty: {dto.final_quantity}");
+            if (order == null) return NotFound();
+
+            order.status = dto.Status;
+            order.final_quantity = dto.final_quantity;
+            order.finished_time = DateTime.Now;
+
+            if (await repo.SaveAllAsync())
+                return Ok(order);
+
+            return BadRequest("Problem updating status");
         }
     }
 }

@@ -44,4 +44,19 @@ public class OrderStatsService : IOrderStatsService
             })
             .ToList();
     }
+
+    public async Task<IEnumerable<ProductionOrderDto>> GetStatusCreated()
+    {
+        var orders = await _repo.ListAllAsync();
+
+        return orders
+        .Where(o => o.status == "Created")
+        .OrderBy(o => o.IdSeq)
+        .Select(g => new ProductionOrderDto
+        {
+            PartId = g.PartIdSeq,
+            Quantity = g.target_quantity,
+            IdSeq = g.IdSeq
+        }).ToList() ;
+    }
 }
