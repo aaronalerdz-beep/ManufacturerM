@@ -5,7 +5,7 @@ namespace Core.Entities;
 
 public class Machine_config : BaseEntity
 {
-    public decimal pressure { get; set; }
+    public double pressure { get; set; }
     public int grit { get; set; }
     public decimal cycle_duration { get; set; }
     public required string operator_name { get; set; } 

@@ -1,7 +1,6 @@
 using API.Controllers;
-using API.RequestHelpers;
 using Core.Entities;
-using Core.Interfeces;
+using Core.Interfaces;
 using Core.Specifications;
 
 using Microsoft.AspNetCore.Mvc;

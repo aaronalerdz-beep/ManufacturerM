@@ -1,7 +1,7 @@
 using System;
 using Core.Entities;
 
-namespace Core.Interfeces;
+namespace Core.Interfaces;
 
 public interface IGenericRepository<T> where T : BaseEntity
 {

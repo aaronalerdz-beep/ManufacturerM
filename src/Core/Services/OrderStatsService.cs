@@ -1,6 +1,6 @@
 using Core.DTOs;
 using Core.Entities;
-using Core.Interfeces;
+using Core.Interfaces;
 
 namespace Core.Services;
 public class OrderStatsService : IOrderStatsService

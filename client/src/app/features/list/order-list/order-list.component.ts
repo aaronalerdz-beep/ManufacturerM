@@ -3,8 +3,8 @@ import { GenericTableComponent } from "../../../shared/components/generic-table/
 import { MatIcon } from "@angular/material/icon";
 import { MatDialog } from '@angular/material/dialog';
 import { OrdersService } from '../../../core/services/orders.service';
-import { Production_order } from '../../../shared/models/Order';
-import { TableColumn } from '../../../shared/models/TableColumn';
+import { Production_order } from '../../../shared/models/order';
+import { TableColumn } from '../../../shared/models/tableColumn';
 import { PartsService } from '../../../core/services/parts.service';
 import { Part } from '../../../shared/models/part';
 

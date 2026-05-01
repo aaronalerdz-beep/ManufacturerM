@@ -7,8 +7,14 @@ import { map } from 'rxjs';
 import { ViewChild } from '@angular/core';
 import { PartsService } from '../../core/services/parts.service';
 import { Part } from '../../shared/models/part';
-import { Production_order } from '../../shared/models/Order';
+import { Production_order } from '../../shared/models/order';
 import { countOrderPart } from '../../shared/models/countorder';
+import { PressureStats } from '../../shared/models/pressureStats';
+import { cycleMService } from '../../shared/models/cycleMService';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { CyclesService } from '../../core/services/cycles.service';
+import { CyclesStatsService } from '../../core/services/cyclesStats.service';
+import { SignalrService } from '../../core/services/signalr.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -21,18 +27,24 @@ import { countOrderPart } from '../../shared/models/countorder';
 })
 export class DashboardComponent {
     @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
-    private ordersService = inject(OrdersService)
+    private ordersService = inject(OrdersService);
     public partsServer = inject(PartsService);
+    public cycleStatsServer = inject(CyclesStatsService);
+    public signalrService = inject(SignalrService);
+    public doughnutChartPlugins = [ChartDataLabels]; 
+
     parts = signal<Part[]>([]);
     orders = signal<Production_order[]>([]);
     mOrders = signal<monthorders[]>([]);
     cOParts = signal<countOrderPart[]>([]);
-    
+    PressureS = signal<PressureStats[]>([]);
+    stats = this.signalrService.cycleStats;  
     
   ngOnInit(): void {
         this.initializeMonth();
         this.initializepartList();
         this.initializeOrderList();
+        this.initializeCycleList();
     }
 
   initializepartList() {
@@ -51,8 +63,12 @@ export class DashboardComponent {
     },
     error: error=> console.log(error)      
     });
-
-    
+  }
+  initializeCycleList(){
+    this.cycleStatsServer.getPressureStats().subscribe({
+            next: data => this.PressureS.set(data),
+            error: err => console.error(err)
+    });
   }
     lastPartCount = computed(() => {
     return this.parts().length > 0 ? this.parts()[this.parts().length - 1] : null;
@@ -108,20 +124,19 @@ export class DashboardComponent {
   public BarChartData: ChartConfiguration<'bar'>['data'] = {
     labels: [],
     datasets: [
-      {
-        data: [],
-        label: 'Ventas 2026',
-        backgroundColor: [
-        '#FF6384', 
-        '#36A2EB', 
-        '#FFCE56', 
-        '#4BC0C0'  
-        ],
-        borderColor: '#510424',
+      { 
+        data: [], 
+        label: 'Complete Cycles', 
+        backgroundColor: '#2ecc71' 
+      },
+      { 
+        data: [], 
+        label: 'Incomplete Cycles', 
+        backgroundColor: '#e74c3c' 
       }
     ]
   };
-  public PieChartData: ChartConfiguration<'pie'>['data'] = {
+  public doughnutChartData: ChartConfiguration<'doughnut'>['data'] = {
     labels: [],
     datasets: [
       {
@@ -132,7 +147,7 @@ export class DashboardComponent {
         '#FFCE56', 
         '#4BC0C0'  
         ],
-        label: 'Ventas 2026',
+        label: '2026',
         borderColor: '#510424',
         
       }
@@ -143,6 +158,7 @@ export class DashboardComponent {
     effect(() => {
       const countO =  this.cOParts();
       const stats = this.mOrders();
+      const pressure = this.PressureS();
       if (stats.length === 0)return; 
       const newData = new Array(12).fill(0);
       stats.forEach(item => {
@@ -155,27 +171,35 @@ export class DashboardComponent {
       if (countO.length > 0) {
         const labelsPartes = countO.map(item => `PN-00000${item.part}`);
         const datosPartes = countO.map(item => item.totalQuantity);
-        this.BarChartData = {
+        
+        this.doughnutChartData = {
           labels: labelsPartes,
           datasets: [
             {
-              ...this.BarChartData.datasets[0],
-              data: datosPartes
-            }
-          ]
-        };
-        this.PieChartData = {
-          labels: labelsPartes,
-          datasets: [
-            {
-              ...this.PieChartData.datasets[0],
+              ...this.doughnutChartData.datasets[0],
               data: datosPartes
             }
           ]
         };
       }
-      
-      
+      if (pressure.length > 0) {
+        const pressureLabels = pressure.map(item => `${item.pressure} PSI`);
+        const dataCompletados = pressure.map(item => item.totalCycles);
+        const dataIncompletos = pressure.map(item => item.incompleteCycles);
+        this.BarChartData = {
+          labels: pressureLabels,
+          datasets: [
+            {
+              ...this.BarChartData.datasets[0],
+              data: dataCompletados
+            },
+            {
+              ...this.BarChartData.datasets[1],
+              data: dataIncompletos
+            }
+          ]
+        };
+      }
       this.chart?.update();
     });
   }
@@ -199,11 +223,26 @@ export class DashboardComponent {
   };
  
   
-  public pieChartOptions: ChartOptions<'pie'> = {
-    responsive: true,
-    plugins: {
-      legend: { display: true }
+ public doughnutChartOptions: ChartOptions<'doughnut'> = {
+  responsive: true,
+  plugins: {
+    legend: { display: true },
+    datalabels: {
+      color: '#fff', 
+      anchor: 'center',
+      align: 'center',
+      font: {
+        weight: 'bold',
+        size: 16
+      },
+      formatter: (value, ctx) => {
+        const dataset = ctx.chart.data.datasets[0].data as number[];
+        const total = dataset.reduce((acc, data) => acc + data, 0);
+        const percentage = ((value * 100) / total).toFixed(0) + '%';
+        return percentage; 
+      },
     }
-  };
+  }
+};  
 
 }

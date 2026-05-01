@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
-import { Production_order } from '../../shared/models/Order';
+import { Production_order } from '../../shared/models/order';
 import { HttpClient } from '@angular/common/http';
 import { monthorders } from '../../shared/models/monthorders';
 import { countOrderPart } from '../../shared/models/countorder';

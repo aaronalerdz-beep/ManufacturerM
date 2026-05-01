@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
-import { TableColumn } from '../../models/TableColumn';
+import { TableColumn } from '../../models/tableColumn';
 import { CommonModule } from '@angular/common';
 import { MatMenuModule } from "@angular/material/menu";
 import { MatIconModule } from "@angular/material/icon";

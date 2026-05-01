@@ -3,7 +3,7 @@ using FluentAssertions;
 using System.Linq;
 using Core.Entities;
 using Moq;
-using Core.Interfeces;
+using Core.Interfaces;
 using Core.Services;
 
 public class OrderStatsServiceTest

@@ -4,7 +4,7 @@ using Core.Entities;
 using Core.DTOs;
 
 
-namespace Core.Interfeces;
+namespace Core.Interfaces;
 
 public interface IOrderStatsService 
 {

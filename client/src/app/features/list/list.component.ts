@@ -2,7 +2,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { ListService } from '../../core/services/list.service';
 import { Part } from '../../shared/models/part';
 import { MatTableModule} from '@angular/material/table'
-import { TableColumn } from '../../shared/models/TableColumn';
+import { TableColumn } from '../../shared/models/tableColumn';
 import {  GenericTableComponent } from '../../shared/components/generic-table/generic-table.component';
 import { MatDialog } from '@angular/material/dialog'
 import { FiltersListComponent } from './filters-list/filters-list.component';

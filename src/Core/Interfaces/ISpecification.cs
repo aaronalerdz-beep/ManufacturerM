@@ -1,7 +1,7 @@
 using System;
 using System.Linq.Expressions;
 
-namespace Core.Interfeces;
+namespace Core.Interfaces;
 
 public interface ISpecification<T>
 {
@@ -15,6 +15,7 @@ public interface ISpecification<T>
     int Skip {get;}
     bool IsPagingEnabled {get;}
     IQueryable<T> ApplyCriteria(IQueryable<T> query);
+    List<Expression<Func<T, object>>> Includes { get; }
 
 }
 

@@ -9,7 +9,6 @@ import { HttpClient } from '@angular/common/http';
 export class MachinesService extends ApiService<machine> {
   protected endpoint = 'machine';
   constructor(http: HttpClient) {
-    console.log('orders')
     super(http);
   }
 }

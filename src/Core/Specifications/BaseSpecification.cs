@@ -1,6 +1,6 @@
 using System;
 using System.Linq.Expressions;
-using Core.Interfeces;
+using Core.Interfaces;
 
 namespace Core.Specifications;
 
@@ -20,6 +20,12 @@ public class BaseSpecification<T>(Expression<Func<T, bool>>? criteria) : ISpecif
     public int Skip {get; private set;}
 
     public bool IsPagingEnabled {get; private set;}
+
+    public List<Expression<Func<T, object>>> Includes { get; } = new();
+    protected void AddInclude(Expression<Func<T, object>> includeExpression)
+    {
+        Includes.Add(includeExpression);
+    }
 
     public IQueryable<T> ApplyCriteria(IQueryable<T> query)
     {

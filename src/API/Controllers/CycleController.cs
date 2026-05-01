@@ -1,5 +1,7 @@
+using API.RequestHelpers;
+using Core.DTOs;
 using Core.Entities;
-using Core.Interfeces;
+using Core.Interfaces;
 using Core.Specifications;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -8,11 +10,11 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CycleController(IGenericRepository<Cycle> repo)  : BaseApiController
+    public class CycleController(IGenericRepository<Cycle> repo, ICycleStatsServices _statsService)  : BaseApiController
     {
         
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<Cycle>>> GetCycle([FromQuery]SpecParams specParams)
+        public async Task<ActionResult<IReadOnlyList<CycleDto>>> GetCyclesOld([FromQuery]SpecParams specParams)
         {
             var spec = new CycleSpecification(specParams);
             return await CreatePagedResult(repo, spec, specParams.PageIndex,specParams.PageSize);
@@ -20,7 +22,7 @@ namespace API.Controllers
         }
         
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<Cycle>> GetCycles(int id)
+        public async Task<ActionResult<Cycle>> GetCycle(int id)
         {
             var parts = await repo.GetByIdAsync(id);
             if(parts == null) return NotFound();
@@ -76,5 +78,11 @@ namespace API.Controllers
             return repo.Exists(id);
         }
         
+        [HttpGet("stats/pressure")]
+        public async Task<ActionResult<IEnumerable<PressureStatsDto>>> GetCyclePressureIncomplet()
+        {
+            var result = await _statsService.CyclePressureIncomplet();
+            return Ok(result);
+        }
     }
 }
